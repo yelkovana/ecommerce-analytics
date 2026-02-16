@@ -17,8 +17,7 @@ st.set_page_config(
 
 # Demo mode indicator
 if os.environ.get("DEMO_MODE", "1") == "1":
-    st.sidebar.info("**Demo Mode** — mock data kullaniliyor. "
-                    "BigQuery baglamak icin `DEMO_MODE=0` ile calistirin.")
+    st.sidebar.caption("Demo Mode — simulated data")
 
 # --- Navigation ---
 pages = {
