@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+.env
+.streamlit/secrets.toml
+*.pdf
+*.html
+!src/reporting/templates/*.html
+!src/reporting/templates/components/*.html
+.DS_Store
+.pytest_cache/
+htmlcov/
+.coverage

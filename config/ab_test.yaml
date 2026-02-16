@@ -1,0 +1,36 @@
+defaults:
+  significance_level: 0.05
+  power: 0.80
+  min_detectable_effect: 0.02
+  allocation_ratio: 0.5
+
+frequentist:
+  test_type: "two-sided"
+  correction_method: "benjamini-hochberg"
+
+bayesian:
+  prior_alpha: 1
+  prior_beta: 1
+  prior_mu: 0.0
+  prior_sigma: 100.0
+  rope_lower: -0.005
+  rope_upper: 0.005
+  n_samples: 10000
+  credible_interval: 0.95
+
+sequential:
+  spending_function: "obrien-fleming"
+  max_looks: 5
+  min_sample_fraction: 0.2
+
+diagnostics:
+  srm_threshold: 0.001
+  novelty_window_days: 7
+  cuped_enabled: true
+
+segment_analysis:
+  dimensions:
+    - "device"
+    - "traffic_source"
+    - "user_type"
+  correction_method: "bonferroni"

@@ -1,0 +1,8 @@
+<div class="chart-container">
+    {% if chart_html %}
+    {{ chart_html | safe }}
+    {% elif chart_image %}
+    <img src="data:image/png;base64,{{ chart_image }}" alt="{{ title | default('Chart') }}" />
+    {% endif %}
+    {% if caption %}<p class="chart-caption">{{ caption }}</p>{% endif %}
+</div>

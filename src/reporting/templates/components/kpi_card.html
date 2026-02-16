@@ -1,0 +1,9 @@
+<div class="kpi-card">
+    <div class="kpi-label">{{ label }}</div>
+    <div class="kpi-value">{{ value }}</div>
+    {% if delta is defined and delta is not none %}
+    <div class="kpi-delta {{ 'positive' if delta >= 0 else 'negative' }}">
+        {{ '+' if delta >= 0 else '' }}{{ "%.1f" | format(delta * 100) }}%
+    </div>
+    {% endif %}
+</div>

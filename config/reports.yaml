@@ -1,0 +1,53 @@
+audiences:
+  executive:
+    label: "Executive Summary"
+    template: "executive.html"
+    max_pages: 2
+    components:
+      - kpi_card
+      - trend_arrow
+      - traffic_light
+    sections:
+      - overview_kpis
+      - trend_summary
+      - alerts
+
+  business:
+    label: "Business Report"
+    template: "business.html"
+    max_pages: 8
+    components:
+      - kpi_card
+      - trend_arrow
+      - traffic_light
+      - chart_embed
+    sections:
+      - overview_kpis
+      - clickstream_summary
+      - funnel_analysis
+      - revenue_analysis
+      - top_products
+      - recommendations_summary
+      - ab_test_results
+      - action_items
+
+  technical:
+    label: "Technical Report"
+    template: "technical.html"
+    max_pages: null
+    components:
+      - kpi_card
+      - trend_arrow
+      - traffic_light
+      - chart_embed
+    sections:
+      - all
+
+formats:
+  - pdf
+  - html
+
+styling:
+  primary_color: "#4F46E5"
+  font_family: "Inter, sans-serif"
+  logo_path: null

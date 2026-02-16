@@ -1,0 +1,20 @@
+bigquery:
+  project_id: "your-gcp-project"
+  dataset: "ecommerce"
+  location: "US"
+  timeout: 60
+
+cache:
+  ttl_seconds: 3600
+  max_entries: 100
+
+app:
+  title: "E-Commerce Analytics"
+  default_date_range_days: 30
+  page_icon: "📊"
+  timezone: "UTC"
+
+logging:
+  level: "INFO"
+  rotation: "10 MB"
+  retention: "30 days"

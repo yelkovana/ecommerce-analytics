@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Business Report — {{ report_title }}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: {{ font_family }}; color: #1E293B; padding: 40px; font-size: 13px; }
+        h1 { color: {{ primary_color }}; font-size: 24px; margin-bottom: 8px; }
+        h2 { color: {{ primary_color }}; font-size: 18px; margin: 24px 0 12px; border-bottom: 2px solid {{ primary_color }}; padding-bottom: 4px; }
+        h3 { font-size: 15px; margin: 16px 0 8px; }
+        .subtitle { color: #64748B; font-size: 14px; margin-bottom: 32px; }
+        .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+        .kpi-card { background: #F8FAFC; border-radius: 8px; padding: 16px; text-align: center; border-left: 4px solid {{ primary_color }}; }
+        .kpi-label { font-size: 11px; color: #64748B; text-transform: uppercase; }
+        .kpi-value { font-size: 24px; font-weight: 700; margin: 4px 0; }
+        .kpi-delta { font-size: 13px; }
+        .kpi-delta.positive { color: #10B981; }
+        .kpi-delta.negative { color: #EF4444; }
+        table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+        th { background: {{ primary_color }}; color: white; padding: 8px 12px; text-align: left; font-size: 12px; }
+        td { padding: 8px 12px; border-bottom: 1px solid #E2E8F0; }
+        tr:nth-child(even) { background: #F8FAFC; }
+        .chart-container { margin: 16px 0; text-align: center; }
+        .chart-container img { max-width: 100%; }
+        .chart-caption { font-size: 11px; color: #64748B; margin-top: 4px; }
+        .action-items { background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 8px; padding: 16px; margin: 16px 0; }
+        .action-items h3 { color: #166534; margin-top: 0; }
+        .action-items ul { margin-left: 20px; }
+        .action-items li { margin: 4px 0; }
+        .traffic-light { display: inline-flex; align-items: center; gap: 6px; margin: 4px 8px; }
+        .traffic-light .indicator { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+        .traffic-light.good .indicator { background: #10B981; }
+        .traffic-light.warning .indicator { background: #F59E0B; }
+        .traffic-light.critical .indicator { background: #EF4444; }
+        .page-break { page-break-before: always; }
+        .footer { margin-top: 40px; font-size: 11px; color: #94A3B8; border-top: 1px solid #E2E8F0; padding-top: 12px; }
+    </style>
+</head>
+<body>
+    <h1>{{ report_title }}</h1>
+    <div class="subtitle">{{ date_range }} | Generated {{ generated_at }}</div>
+
+    <!-- KPIs -->
+    <h2>Key Performance Indicators</h2>
+    <div class="kpi-grid">
+        {% for kpi in kpis %}
+        {% include 'components/kpi_card.html' %}
+        {% endfor %}
+    </div>
+
+    {% for section in sections %}
+    {% if section.page_break %}<div class="page-break"></div>{% endif %}
+
+    <h2>{{ section.title }}</h2>
+    {% if section.description %}<p>{{ section.description }}</p>{% endif %}
+
+    {% if section.table %}
+    <table>
+        <thead>
+            <tr>{% for col in section.table.columns %}<th>{{ col }}</th>{% endfor %}</tr>
+        </thead>
+        <tbody>
+            {% for row in section.table.rows %}
+            <tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    {% if section.chart_html %}
+    <div class="chart-container">{{ section.chart_html | safe }}</div>
+    {% endif %}
+
+    {% if section.chart_image %}
+    <div class="chart-container">
+        <img src="data:image/png;base64,{{ section.chart_image }}" />
+        {% if section.chart_caption %}<p class="chart-caption">{{ section.chart_caption }}</p>{% endif %}
+    </div>
+    {% endif %}
+    {% endfor %}
+
+    {% if action_items %}
+    <div class="page-break"></div>
+    <div class="action-items">
+        <h3>Recommended Actions</h3>
+        <ul>
+            {% for item in action_items %}
+            <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <div class="footer">
+        E-Commerce Analytics Platform | Confidential | Page {{ page_num | default('') }}
+    </div>
+</body>
+</html>

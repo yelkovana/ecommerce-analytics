@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Executive Summary — {{ report_title }}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: {{ font_family }}; color: #1E293B; padding: 40px; }
+        h1 { color: {{ primary_color }}; font-size: 24px; margin-bottom: 8px; }
+        .subtitle { color: #64748B; font-size: 14px; margin-bottom: 32px; }
+        .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+        .kpi-card { background: #F8FAFC; border-radius: 8px; padding: 16px; text-align: center; border-left: 4px solid {{ primary_color }}; }
+        .kpi-label { font-size: 12px; color: #64748B; text-transform: uppercase; }
+        .kpi-value { font-size: 28px; font-weight: 700; margin: 4px 0; }
+        .kpi-delta { font-size: 14px; }
+        .kpi-delta.positive { color: #10B981; }
+        .kpi-delta.negative { color: #EF4444; }
+        .section { margin-bottom: 24px; }
+        .section h2 { font-size: 18px; margin-bottom: 12px; color: {{ primary_color }}; }
+        .traffic-light { display: inline-flex; align-items: center; gap: 6px; margin: 4px 8px; }
+        .traffic-light .indicator { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+        .traffic-light.good .indicator { background: #10B981; }
+        .traffic-light.warning .indicator { background: #F59E0B; }
+        .traffic-light.critical .indicator { background: #EF4444; }
+        .trend-arrow.up { color: #10B981; }
+        .trend-arrow.down { color: #EF4444; }
+        .trend-arrow.flat { color: #64748B; }
+        .alert-box { background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px; padding: 12px; margin: 8px 0; }
+        .footer { margin-top: 40px; font-size: 11px; color: #94A3B8; border-top: 1px solid #E2E8F0; padding-top: 12px; }
+    </style>
+</head>
+<body>
+    <h1>{{ report_title }}</h1>
+    <div class="subtitle">{{ date_range }} | Generated {{ generated_at }}</div>
+
+    <div class="kpi-grid">
+        {% for kpi in kpis %}
+        {% include 'components/kpi_card.html' %}
+        {% endfor %}
+    </div>
+
+    {% if health_indicators %}
+    <div class="section">
+        <h2>Health Indicators</h2>
+        {% for indicator in health_indicators %}
+        {% with status=indicator.status, label=indicator.label %}
+        {% include 'components/traffic_light.html' %}
+        {% endwith %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if alerts %}
+    <div class="section">
+        <h2>Alerts</h2>
+        {% for alert in alerts %}
+        <div class="alert-box">{{ alert }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if trends %}
+    <div class="section">
+        <h2>Key Trends</h2>
+        {% for trend in trends %}
+        {% with direction=trend.direction, label=trend.label %}
+        {% include 'components/trend_arrow.html' %}
+        {% endwith %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="footer">
+        E-Commerce Analytics Platform | Confidential
+    </div>
+</body>
+</html>

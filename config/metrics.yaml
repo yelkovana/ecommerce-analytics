@@ -1,0 +1,78 @@
+clickstream:
+  bounce_rate:
+    label: "Bounce Rate"
+    format: "percent"
+    decimals: 1
+    thresholds:
+      good: 0.35
+      warning: 0.50
+      critical: 0.65
+    direction: "lower_is_better"
+  pages_per_session:
+    label: "Pages / Session"
+    format: "number"
+    decimals: 1
+    thresholds:
+      good: 4.0
+      warning: 2.5
+      critical: 1.5
+    direction: "higher_is_better"
+  avg_session_duration:
+    label: "Avg Session Duration (s)"
+    format: "duration"
+    thresholds:
+      good: 300
+      warning: 120
+      critical: 60
+    direction: "higher_is_better"
+
+orders:
+  gmv:
+    label: "GMV"
+    format: "currency"
+    decimals: 0
+    direction: "higher_is_better"
+  aov:
+    label: "AOV"
+    format: "currency"
+    decimals: 2
+    direction: "higher_is_better"
+  conversion_rate:
+    label: "Conversion Rate"
+    format: "percent"
+    decimals: 2
+    thresholds:
+      good: 0.03
+      warning: 0.02
+      critical: 0.01
+    direction: "higher_is_better"
+  revenue_per_session:
+    label: "Revenue / Session"
+    format: "currency"
+    decimals: 2
+    direction: "higher_is_better"
+
+recommendations:
+  ctr:
+    label: "CTR"
+    format: "percent"
+    decimals: 2
+    thresholds:
+      good: 0.05
+      warning: 0.02
+      critical: 0.01
+    direction: "higher_is_better"
+  conversion_rate:
+    label: "Rec Conversion Rate"
+    format: "percent"
+    decimals: 2
+    direction: "higher_is_better"
+  catalog_coverage:
+    label: "Catalog Coverage"
+    format: "percent"
+    decimals: 1
+    thresholds:
+      good: 0.30
+      warning: 0.15
+      critical: 0.05
+    direction: "higher_is_better"

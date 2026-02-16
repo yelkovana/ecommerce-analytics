@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Technical Report — {{ report_title }}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: {{ font_family }}; color: #1E293B; padding: 40px; font-size: 12px; line-height: 1.5; }
+        h1 { color: {{ primary_color }}; font-size: 22px; margin-bottom: 8px; }
+        h2 { color: {{ primary_color }}; font-size: 16px; margin: 20px 0 8px; border-bottom: 2px solid {{ primary_color }}; padding-bottom: 4px; }
+        h3 { font-size: 14px; margin: 12px 0 6px; }
+        .subtitle { color: #64748B; font-size: 13px; margin-bottom: 24px; }
+        .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+        .kpi-card { background: #F8FAFC; border-radius: 6px; padding: 12px; text-align: center; border-left: 3px solid {{ primary_color }}; }
+        .kpi-label { font-size: 10px; color: #64748B; text-transform: uppercase; }
+        .kpi-value { font-size: 20px; font-weight: 700; margin: 2px 0; }
+        .kpi-delta { font-size: 12px; }
+        .kpi-delta.positive { color: #10B981; }
+        .kpi-delta.negative { color: #EF4444; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 11px; }
+        th { background: {{ primary_color }}; color: white; padding: 6px 10px; text-align: left; }
+        td { padding: 6px 10px; border-bottom: 1px solid #E2E8F0; }
+        tr:nth-child(even) { background: #F8FAFC; }
+        .chart-container { margin: 12px 0; text-align: center; }
+        .chart-container img { max-width: 100%; }
+        .methodology { background: #F1F5F9; border-radius: 6px; padding: 12px; margin: 12px 0; font-size: 11px; }
+        .methodology h4 { margin-bottom: 6px; }
+        .ci-table td { font-family: monospace; }
+        code { background: #F1F5F9; padding: 2px 6px; border-radius: 4px; font-size: 11px; }
+        pre { background: #1E293B; color: #E2E8F0; padding: 12px; border-radius: 6px; overflow-x: auto; font-size: 11px; margin: 8px 0; }
+        .page-break { page-break-before: always; }
+        .footer { margin-top: 30px; font-size: 10px; color: #94A3B8; border-top: 1px solid #E2E8F0; padding-top: 8px; }
+    </style>
+</head>
+<body>
+    <h1>{{ report_title }}</h1>
+    <div class="subtitle">{{ date_range }} | Generated {{ generated_at }}</div>
+
+    {% if toc %}
+    <h2>Table of Contents</h2>
+    <ol>
+        {% for item in toc %}<li>{{ item }}</li>{% endfor %}
+    </ol>
+    {% endif %}
+
+    <!-- KPIs -->
+    <h2>Key Performance Indicators</h2>
+    <div class="kpi-grid">
+        {% for kpi in kpis %}
+        {% include 'components/kpi_card.html' %}
+        {% endfor %}
+    </div>
+
+    {% for section in sections %}
+    {% if section.page_break %}<div class="page-break"></div>{% endif %}
+
+    <h2>{{ section.title }}</h2>
+    {% if section.description %}<p>{{ section.description }}</p>{% endif %}
+
+    {% if section.methodology %}
+    <div class="methodology">
+        <h4>Methodology</h4>
+        {{ section.methodology }}
+    </div>
+    {% endif %}
+
+    {% if section.table %}
+    <table class="{{ 'ci-table' if section.is_ci_table else '' }}">
+        <thead>
+            <tr>{% for col in section.table.columns %}<th>{{ col }}</th>{% endfor %}</tr>
+        </thead>
+        <tbody>
+            {% for row in section.table.rows %}
+            <tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+
+    {% if section.chart_html %}
+    <div class="chart-container">{{ section.chart_html | safe }}</div>
+    {% endif %}
+
+    {% if section.chart_image %}
+    <div class="chart-container">
+        <img src="data:image/png;base64,{{ section.chart_image }}" />
+        {% if section.chart_caption %}<p>{{ section.chart_caption }}</p>{% endif %}
+    </div>
+    {% endif %}
+
+    {% if section.sql_query %}
+    <h3>SQL Query</h3>
+    <pre>{{ section.sql_query }}</pre>
+    {% endif %}
+    {% endfor %}
+
+    <div class="footer">
+        E-Commerce Analytics Platform | Technical Report | Confidential
+    </div>
+</body>
+</html>
